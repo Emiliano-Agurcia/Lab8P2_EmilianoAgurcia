@@ -5,13 +5,14 @@
  */
 package lab8p2_emilianoagurcia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author emili
  */
-public class Universo {
+public class Universo implements Serializable{
     String Nombre;
     int cantSeresVivos;//Registrados, al crear uno, es 0.
     ArrayList <SerVivo> SeresVivos = new ArrayList();//Almacena los Seres Vivos, no va a los binarios
@@ -47,7 +48,7 @@ public class Universo {
 
     @Override
     public String toString() {
-        return "Universo{" + "Nombre=" + Nombre + ", cantSeresVivos=" + cantSeresVivos + ", SeresVivos=" + SeresVivos + '}';
+        return "Universo: "+Nombre;
     }
     
     

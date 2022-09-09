@@ -12,13 +12,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author emili
  */
-public class adminUniversos {
+public class adminUniversos{
     ArrayList <Universo> ListaUniversos = new ArrayList();
     File Archivo = null;
 
@@ -42,7 +43,7 @@ public class adminUniversos {
         this.Archivo = Archivo;
     }
     
-    public void LeerArchivo() throws IOException{
+    public void CargarArchivo() throws IOException{
         ListaUniversos = new ArrayList();
         Universo temp;
         

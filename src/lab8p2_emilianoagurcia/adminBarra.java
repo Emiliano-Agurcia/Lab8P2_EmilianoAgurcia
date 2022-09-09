@@ -13,12 +13,10 @@ import javax.swing.JProgressBar;
  */
 public class adminBarra extends Thread{
     JProgressBar Barra;
-    int Limite;//Cantidad de Archivos
     boolean Completado;
 
-    public adminBarra(JProgressBar Barra, int Limite, boolean Completado) {
+    public adminBarra(JProgressBar Barra, boolean Completado) {
         this.Barra = Barra;
-        this.Limite = Limite;
         this.Completado = Completado;
     }
 
@@ -28,14 +26,6 @@ public class adminBarra extends Thread{
 
     public void setBarra(JProgressBar Barra) {
         this.Barra = Barra;
-    }
-
-    public int getLimite() {
-        return Limite;
-    }
-
-    public void setLimite(int Limite) {
-        this.Limite = Limite;
     }
 
     public boolean isCompletado() {
@@ -50,9 +40,9 @@ public class adminBarra extends Thread{
     public void run() {
         while(Completado == false){
             Barra.setValue(Barra.getValue() + 1);
-            Barra.setString( Integer.toString(Barra.getValue()) + " de " + Integer.toString(Limite) + " archivos cargados.");
+            Barra.setString( Integer.toString(Barra.getValue()) + " de " + Integer.toString(Barra.getMaximum()) + " archivos cargados.");
             
-            if(Barra.getValue() == Limite){
+            if(Barra.getValue() == Barra.getMaximum()){
                 Barra.setString("Archivos Cargados");
                 Completado = true;
             }

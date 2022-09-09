@@ -5,11 +5,13 @@
  */
 package lab8p2_emilianoagurcia;
 
+import java.io.Serializable;
+
 /**
  *
  * @author emili
  */
-public class SerVivo {
+public class SerVivo implements Serializable{
     String Nombre;
     String ID;
     int Poder;
@@ -76,7 +78,7 @@ public class SerVivo {
 
     @Override
     public String toString() {
-        return "SerVivo{" + "Nombre=" + Nombre + ", ID=" + ID + ", Poder=" + Poder + ", Years=" + Years + ", Procedencia=" + Procedencia + ", Raza=" + Raza + '}';
+        return Raza +" "+ Nombre;
     }
     
     

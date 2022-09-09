@@ -11,13 +11,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author emili
  */
-public class adminSerVivo {
+public class adminSerVivo{
     ArrayList <SerVivo> ListaSeresVivos = new ArrayList();
     File Archivo = null;
     
@@ -44,16 +45,13 @@ public class adminSerVivo {
     public adminSerVivo() {
     }
     
-    public void LeerArchivo() throws IOException{
+    public void CargarArchivo() throws IOException{
         ListaSeresVivos = new ArrayList();
         SerVivo temp;
         
-        FileInputStream FR = null;
-        ObjectInputStream BR = null;
-        
         if(Archivo.exists()){
-            FR = new FileInputStream(Archivo);
-            BR = new ObjectInputStream(FR);
+           FileInputStream FR = new FileInputStream(Archivo);
+           ObjectInputStream BR = new ObjectInputStream(FR);
             
             try {
                 while( (temp = (SerVivo)BR.readObject()) != null){
@@ -61,8 +59,12 @@ public class adminSerVivo {
                 }
             } catch (Exception e) {
             }
+            FR.close();
+            BR.close();
+            
         }
     }
+    
     public void EscribirArchivo() throws IOException{
         FileOutputStream FW = null;
         ObjectOutputStream BW = null;
@@ -74,8 +76,8 @@ public class adminSerVivo {
             for (SerVivo u : ListaSeresVivos) {
                 BW.writeObject( u );
             }
-            
             BW.flush();
+            
         } catch (Exception e) {
         }
         FW.close();
