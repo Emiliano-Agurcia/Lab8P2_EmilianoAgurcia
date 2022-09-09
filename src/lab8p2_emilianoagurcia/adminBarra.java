@@ -53,6 +53,7 @@ public class adminBarra extends Thread{
             Barra.setString( Integer.toString(Barra.getValue()) + " de " + Integer.toString(Limite) + " archivos cargados.");
             
             if(Barra.getValue() == Limite){
+                Barra.setString("Archivos Cargados");
                 Completado = true;
             }
             
