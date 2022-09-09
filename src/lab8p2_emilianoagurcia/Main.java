@@ -5,6 +5,9 @@
  */
 package lab8p2_emilianoagurcia;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import javax.swing.UIManager;
+
 /**
  *
  * @author emili
@@ -27,17 +30,182 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jProgressBar1 = new javax.swing.JProgressBar();
+        BACKGROUND = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        nombre = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        TF_NombreUniverso = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        SP_Years = new javax.swing.JSpinner();
+        CB_Raza = new javax.swing.JComboBox<>();
+        TF_ID = new javax.swing.JTextField();
+        TF_Nombre = new javax.swing.JTextField();
+        SP_Poder = new javax.swing.JSpinner();
+        BT_AgregarSerVivo = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        CB_Universo1 = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        mod_SP_Years = new javax.swing.JSpinner();
+        mod_CB_Universo = new javax.swing.JComboBox<>();
+        mod_TF_ID = new javax.swing.JTextField();
+        mod_TF_Nombre = new javax.swing.JTextField();
+        mod_SP_Poder = new javax.swing.JSpinner();
+        mod_BT_ModificarSerVivo = new javax.swing.JButton();
+        mod_CB_Raza = new javax.swing.JComboBox<>();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        BACKGROUND.setBackground(new java.awt.Color(0, 0, 0));
+        BACKGROUND.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        nombre.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel1.setText("Poder");
+        nombre.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
+        jLabel2.setText("Crear Ser Vivo");
+        nombre.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel3.setText("Nombre");
+        nombre.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 310, -1, 20));
+
+        TF_NombreUniverso.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        nombre.add(TF_NombreUniverso, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 310, 210, -1));
+
+        jLabel4.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel4.setText("Raza");
+        nombre.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 410, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel5.setText("Años");
+        nombre.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel6.setText("ID");
+        nombre.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 250, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel7.setText("Nombre");
+        nombre.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 200, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel8.setText("Universo de Procedencia");
+        nombre.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 470, -1, -1));
+
+        SP_Years.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        SP_Years.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        nombre.add(SP_Years, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 80, -1));
+
+        CB_Raza.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        CB_Raza.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Humano", "Amanto" }));
+        nombre.add(CB_Raza, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, 170, -1));
+
+        TF_ID.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        nombre.add(TF_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 180, -1));
+
+        TF_Nombre.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        nombre.add(TF_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 180, -1));
+
+        SP_Poder.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        SP_Poder.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
+        nombre.add(SP_Poder, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 80, -1));
+
+        BT_AgregarSerVivo.setText("Agregar Ser Vivo");
+        nombre.add(BT_AgregarSerVivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 550, 170, 50));
+
+        jLabel9.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
+        jLabel9.setText("Crear Universo");
+        nombre.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 270, -1, -1));
+
+        CB_Universo1.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        nombre.add(CB_Universo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 470, 170, -1));
+
+        jTabbedPane1.addTab("Ser Vivo", nombre);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel10.setText("Poder");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 310, -1, -1));
+
+        jLabel11.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
+        jLabel11.setText("Modificar Ser Vivo");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 150, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel12.setText("Raza");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 420, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel13.setText("Años");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 360, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel14.setText("ID");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, -1, -1));
+
+        jLabel15.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel15.setText("Nombre");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jLabel16.setText("Universo de Procedencia");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 480, -1, -1));
+
+        mod_SP_Years.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        mod_SP_Years.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        jPanel1.add(mod_SP_Years, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 360, 80, -1));
+
+        mod_CB_Universo.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jPanel1.add(mod_CB_Universo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 480, 170, -1));
+
+        mod_TF_ID.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jPanel1.add(mod_TF_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 260, 180, -1));
+
+        mod_TF_Nombre.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        jPanel1.add(mod_TF_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 210, 180, -1));
+
+        mod_SP_Poder.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        mod_SP_Poder.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
+        jPanel1.add(mod_SP_Poder, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 310, 80, -1));
+
+        mod_BT_ModificarSerVivo.setText("Agregar Ser Vivo");
+        jPanel1.add(mod_BT_ModificarSerVivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 560, 170, 50));
+
+        mod_CB_Raza.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        mod_CB_Raza.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Humano", "Amanto" }));
+        jPanel1.add(mod_CB_Raza, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 420, 170, -1));
+
+        jTabbedPane1.addTab("Modificar Ser Vivo", jPanel1);
+
+        BACKGROUND.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 780));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(BACKGROUND, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(BACKGROUND, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -48,27 +216,11 @@ public class Main extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -79,5 +231,41 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel BACKGROUND;
+    private javax.swing.JButton BT_AgregarSerVivo;
+    private javax.swing.JComboBox<String> CB_Raza;
+    private javax.swing.JComboBox<String> CB_Universo1;
+    private javax.swing.JSpinner SP_Poder;
+    private javax.swing.JSpinner SP_Years;
+    private javax.swing.JTextField TF_ID;
+    private javax.swing.JTextField TF_Nombre;
+    private javax.swing.JTextField TF_NombreUniverso;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton mod_BT_ModificarSerVivo;
+    private javax.swing.JComboBox<String> mod_CB_Raza;
+    private javax.swing.JComboBox<String> mod_CB_Universo;
+    private javax.swing.JSpinner mod_SP_Poder;
+    private javax.swing.JSpinner mod_SP_Years;
+    private javax.swing.JTextField mod_TF_ID;
+    private javax.swing.JTextField mod_TF_Nombre;
+    private javax.swing.JPanel nombre;
     // End of variables declaration//GEN-END:variables
 }
