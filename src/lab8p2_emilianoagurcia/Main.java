@@ -6,16 +6,23 @@
 package lab8p2_emilianoagurcia;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author emili
  */
 public class Main extends javax.swing.JFrame {
-
+    
     public Main() {
         initComponents();
         
@@ -24,7 +31,7 @@ public class Main extends javax.swing.JFrame {
         Hilo_Barra.start();
         
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -33,7 +40,7 @@ public class Main extends javax.swing.JFrame {
         BACKGROUND_Cargar = new javax.swing.JPanel();
         PB_BarraCarga = new javax.swing.JProgressBar();
         BACKGROUND = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        TabbedPane = new javax.swing.JTabbedPane();
         Tab_Crear = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -81,9 +88,9 @@ public class Main extends javax.swing.JFrame {
         busq_TF_ID1 = new javax.swing.JTextField();
         busq_TF_Nombre1 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        MenuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        Mitem_CargarArchivos = new javax.swing.JMenuItem();
 
         BACKGROUND_Cargar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -107,6 +114,12 @@ public class Main extends javax.swing.JFrame {
 
         BACKGROUND.setBackground(new java.awt.Color(0, 0, 0));
         BACKGROUND.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        TabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TabbedPaneStateChanged(evt);
+            }
+        });
 
         Tab_Crear.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -190,7 +203,7 @@ public class Main extends javax.swing.JFrame {
         });
         Tab_Crear.add(BT_CrearUniverso, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 240, 140, 40));
 
-        jTabbedPane1.addTab("Ser Vivo", Tab_Crear);
+        TabbedPane.addTab("Ser Vivo", Tab_Crear);
 
         Tab_Modificar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -259,7 +272,7 @@ public class Main extends javax.swing.JFrame {
         jLabel17.setText("Nombre");
         Tab_Modificar.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, -1, -1));
 
-        jTabbedPane1.addTab("Modificar Ser Vivo", Tab_Modificar);
+        TabbedPane.addTab("Modificar Ser Vivo", Tab_Modificar);
 
         Tab_Eliminar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -275,7 +288,7 @@ public class Main extends javax.swing.JFrame {
         jLabel22.setText("Eliminar Ser Vivo");
         Tab_Eliminar.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 180, -1, -1));
 
-        jTabbedPane1.addTab("Eliminar Ser Vivo", Tab_Eliminar);
+        TabbedPane.addTab("Eliminar Ser Vivo", Tab_Eliminar);
 
         Tab_Verificacion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -301,18 +314,23 @@ public class Main extends javax.swing.JFrame {
         jLabel20.setText("Verificación");
         Tab_Verificacion.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 170, -1, -1));
 
-        jTabbedPane1.addTab("Verificacion", Tab_Verificacion);
+        TabbedPane.addTab("Verificacion", Tab_Verificacion);
 
-        BACKGROUND.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 780));
+        BACKGROUND.add(TabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 780));
 
         jMenu1.setText("Archivos");
 
-        jMenuItem1.setText("Cargar Archivos");
-        jMenu1.add(jMenuItem1);
+        Mitem_CargarArchivos.setText("Cargar Archivos");
+        Mitem_CargarArchivos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Mitem_CargarArchivosMouseClicked(evt);
+            }
+        });
+        jMenu1.add(Mitem_CargarArchivos);
 
-        jMenuBar1.add(jMenu1);
+        MenuBar.add(jMenu1);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(MenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -337,7 +355,31 @@ public class Main extends javax.swing.JFrame {
                 0
             );
             
+            //Single Universo
+            try {
+                String path = "./cUniversos/" + TF_NombreUniverso.getText() + ".emi";
+                System.out.println(path);
+                
+                adminUniversos AU = new adminUniversos(path);
+                AU.LeerArchivo();
+                AU.getListaUniversos().add(newUniverso);
+                AU.EscribirArchivo();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             
+            //All Universos
+            try {
+                adminUniversos AU = new adminUniversos("./AllUniversos.emi");
+                AU.LeerArchivo();
+                AU.getListaUniversos().add(newUniverso);
+                AU.EscribirArchivo();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            
+            TF_NombreUniverso.setText("");
+            JOptionPane.showMessageDialog(this, "El universo ha sido creado exitosamente");
         }
     }//GEN-LAST:event_BT_CrearUniversoMouseClicked
 
@@ -354,6 +396,29 @@ public class Main extends javax.swing.JFrame {
                 (String) CB_Raza.getSelectedItem()
             );
             
+            //Singel SerVivo
+            try {
+                String path = "./cSeresVivos/" + TF_Nombre.getText() + ".emi";
+                
+                adminSerVivo AS = new adminSerVivo(path);
+                
+                AS.LeerArchivo();
+                AS.getListaSeresVivos().add(newSer);
+                AS.EscribirArchivo();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            
+            //AllSeresVivos
+            try {
+                adminSerVivo AS = new adminSerVivo("./AllSeresVivos.emi");
+                
+                AS.LeerArchivo();
+                AS.getListaSeresVivos().add(newSer);
+                AS.EscribirArchivo();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             
         }
 
@@ -372,6 +437,32 @@ public class Main extends javax.swing.JFrame {
             mod_CB_Universo.setSelectedItem(modSerVivo.getProcedencia());
         }
     }//GEN-LAST:event_mod_CB_ElegirItemStateChanged
+
+    private void TabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabbedPaneStateChanged
+        try {
+            adminSerVivo AS = new adminSerVivo("./AllSeresVivos.emi");
+            AS.LeerArchivo();
+            
+            DefaultComboBoxModel ModeloNuevo = new DefaultComboBoxModel(AS.getListaSeresVivos().toArray());
+            CB_Universo.setModel(ModeloNuevo);
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_TabbedPaneStateChanged
+
+    private void Mitem_CargarArchivosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Mitem_CargarArchivosMouseClicked
+        JFileChooser FC = new JFileChooser();
+        File Selected_Archivo = null;
+        
+        FileNameExtensionFilter MyFilter = new FileNameExtensionFilter("emi Files", "emi");
+        
+        FC.setFileFilter(MyFilter);
+        
+        if(FC.showOpenDialog(this) == 0){
+            Selected_Archivo = FC.getSelectedFile();
+        }
+    }//GEN-LAST:event_Mitem_CargarArchivosMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -398,6 +489,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> CB_Raza;
     private javax.swing.JComboBox<String> CB_Universo;
     private javax.swing.JDialog Dialog_Cargar;
+    private javax.swing.JMenuBar MenuBar;
+    private javax.swing.JMenuItem Mitem_CargarArchivos;
     private javax.swing.JProgressBar PB_BarraCarga;
     private javax.swing.JSpinner SP_Poder;
     private javax.swing.JSpinner SP_Years;
@@ -408,6 +501,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel Tab_Eliminar;
     private javax.swing.JPanel Tab_Modificar;
     private javax.swing.JPanel Tab_Verificacion;
+    private javax.swing.JTabbedPane TabbedPane;
     private javax.swing.JTextField busq_TF_ID1;
     private javax.swing.JTextField busq_TF_Nombre1;
     private javax.swing.JComboBox<String> elim_CB_Elegir;
@@ -434,9 +528,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton mod_BT_ModificarSerVivo;
     private javax.swing.JComboBox<String> mod_CB_Elegir;
     private javax.swing.JComboBox<String> mod_CB_Raza;

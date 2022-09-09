@@ -7,8 +7,10 @@ package lab8p2_emilianoagurcia;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -61,7 +63,22 @@ public class adminSerVivo {
             }
         }
     }
-    public void EscribirArchivo(){
+    public void EscribirArchivo() throws IOException{
+        FileOutputStream FW = null;
+        ObjectOutputStream BW = null;
         
+        try {
+            FW = new FileOutputStream(Archivo);
+            BW = new ObjectOutputStream(FW);
+            
+            for (SerVivo u : ListaSeresVivos) {
+                BW.writeObject( u );
+            }
+            
+            BW.flush();
+        } catch (Exception e) {
+        }
+        FW.close();
+        BW.close();
     }
 }
