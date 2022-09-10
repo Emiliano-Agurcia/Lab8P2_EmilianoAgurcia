@@ -521,6 +521,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_TabbedPaneStateChanged
 
     private void Mitem_CargarArchivosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Mitem_CargarArchivosMousePressed
+        
         JFileChooser FC = new JFileChooser("./");
         File Selected_Archivo = null;
         FileInputStream FR = null;
@@ -538,35 +539,51 @@ public class Main extends javax.swing.JFrame {
                 FR = new FileInputStream(Selected_Archivo);
                 BR = new ObjectInputStream(FR);
                 
-                if(BR.readObject() instanceof SerVivo){
+                if (BR.readObject() instanceof SerVivo) {
                     adminSerVivo AS = new adminSerVivo();
                     AS.setArchivo(Selected_Archivo);
-                    AS.CargarArchivo();    
-                    
-                    SeresVivosCargados = AS.getListaSeresVivos();
-                    
-                    //Progress Bar
-                    PB_BarraCarga.setMaximum(AS.getListaSeresVivos().size());
-                    L_Cargando.setText("Cargando archivos...");
-                    L_Espere.setVisible(true);
-                    AB.start();
-                    AB = new adminBarra(PB_BarraCarga, L_Cargando, L_Espere, true, false);
-                    //Fin Progress Bar
-                    
-                }else{
+                    AS.CargarArchivo();
+
+                    if (SeresVivosCargados.isEmpty()) {
+                        SeresVivosCargados = AS.getListaSeresVivos();
+
+                        //Progress Bar
+                        PB_BarraCarga.setMaximum(AS.getListaSeresVivos().size());
+                        L_Cargando.setText("Cargando archivos...");
+                        L_Espere.setVisible(true);
+                        AB.start();
+                        AB = new adminBarra(PB_BarraCarga, L_Cargando, L_Espere, true, false);
+                        //Fin Progress Bar    
+                    }else{
+                        for (int i = 0; i < AS.getListaSeresVivos().size(); i++) {
+                            if(  !SeresVivosCargados.contains(AS.getListaSeresVivos().get(i))  ){
+                                SeresVivosCargados.add(AS.getListaSeresVivos().get(i));
+                            }
+                        }
+                    }
+
+                } else {
                     adminUniversos AU = new adminUniversos();
                     AU.setArchivo(Selected_Archivo);
-                    AU.CargarArchivo();    
+                    AU.CargarArchivo();
+                    if (UniversosCargados.isEmpty()) {
+                        UniversosCargados = AU.getListaUniversos();
+
+                        //Progress Bar
+                        L_Cargando.setText("Cargando archivos...");
+                        L_Espere.setVisible(true);
+                        PB_BarraCarga.setMaximum(AU.getListaUniversos().size());
+                        AB.start();
+                        AB = new adminBarra(PB_BarraCarga, L_Cargando, L_Espere, true, false);
+                        //Fin Progress Bar    
+                    } else {
+                        for (int i = 0; i < AU.getListaUniversos().size(); i++) {
+                            if(  !UniversosCargados.contains(AU.getListaUniversos().get(i))  ){
+                                UniversosCargados.add(AU.getListaUniversos().get(i));
+                            }
+                        }
+                    }
                     
-                    UniversosCargados = AU.getListaUniversos();
-                    
-                    //Progress Bar
-                    L_Cargando.setText("Cargando archivos...");
-                    L_Espere.setVisible(true);
-                    PB_BarraCarga.setMaximum(AU.getListaUniversos().size());
-                    AB.start();
-                    AB = new adminBarra(PB_BarraCarga, L_Cargando, L_Espere, true, false);
-                    //Fin Progress Bar
                 }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -588,15 +605,33 @@ public class Main extends javax.swing.JFrame {
             int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar el Ser Vivo?", "Eliminar Ser Vivo", YES_NO_OPTION);
             if(opcion == 0){
                 
+                //En AllSeresVivos
                 try {
                     adminSerVivo AS = new adminSerVivo("./AllSeresVivos.emi");
                     AS.CargarArchivo();
                     AS.getListaSeresVivos().remove(elim_CB_Elegir.getSelectedIndex());
                     AS.EscribirArchivo();
                     
+                    SeresVivosCargados.remove(elim_CB_Elegir.getSelectedIndex());
+                    
                     JOptionPane.showMessageDialog(this, "Ser Vivo eliminado exitosamente");
                     elim_CB_Elegir.setSelectedItem(null);
                 } catch (Exception ex) {
+                }
+                
+                //En SerVivo individual
+                try {
+                    for (int i = 0; i < SeresVivosCargados.size(); i++) {
+                        String pathEliminar = "./cSeresVivos/" + ((SerVivo)elim_CB_Elegir.getSelectedItem()).getNombre() + ".emi";
+                        String path = "./cSeresVivos/" + SeresVivosCargados.get(i).getNombre() + ".emi";
+                        File Archivo = new File(path);
+                        
+                        if(pathEliminar.equals(path)){
+                            Archivo.delete();
+                        }
+                        
+                    }
+                } catch (Exception e) {
                 }
                 
             }
@@ -621,6 +656,8 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor llene todas las casillas");
         }
         if(mod_CB_Elegir.getSelectedIndex() != -1){
+            
+            //En AllSeresVivos
             try {
                 adminSerVivo AS = new adminSerVivo("./AllSeresVivos");
                 AS.CargarArchivo();    
@@ -634,7 +671,30 @@ public class Main extends javax.swing.JFrame {
                 
                 JOptionPane.showMessageDialog(this, "Modificado exitosamente");
             } catch (Exception e) {
-            }    
+            }
+
+            //En SerVivo individual
+            try {
+                for (int i = 0; i < SeresVivosCargados.size(); i++) {
+                    String pathModificar = "./cSeresVivos/" + ((SerVivo) elim_CB_Elegir.getSelectedItem()).getNombre() + ".emi";
+                    String path = "./cSeresVivos/" + SeresVivosCargados.get(i).getNombre() + ".emi";
+                    File Archivo = new File(path);
+
+                    if (pathModificar.equals(path)) {
+                        adminSerVivo AS = new adminSerVivo(path);
+                        AS.CargarArchivo();
+                        AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setNombre(mod_TF_Nombre.getText());
+                        AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setID(mod_TF_ID.getText());
+                        AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setPoder((int) mod_SP_Poder.getValue());
+                        AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setYears((int) mod_SP_Years.getValue());
+                        AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setRaza(mod_CB_Raza.getSelectedItem().toString());
+                        AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setProcedencia((Universo) mod_CB_Universo.getSelectedItem());
+                        AS.EscribirArchivo();
+                    }
+
+                }
+            } catch (Exception e) {
+            }
         }
         
     }//GEN-LAST:event_mod_BT_ModificarSerVivoMouseClicked
