@@ -23,6 +23,9 @@ public class adminUniversos{
     ArrayList <Universo> ListaUniversos = new ArrayList();
     File Archivo = null;
 
+    public adminUniversos() {
+    }
+
     public adminUniversos(String path) {
         Archivo = new File(path);
     }

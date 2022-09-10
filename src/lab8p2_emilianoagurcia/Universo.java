@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 public class Universo implements Serializable{
     String Nombre;
-    int cantSeresVivos;//Registrados, al crear uno, es 0.
     ArrayList <SerVivo> SeresVivos = new ArrayList();//Almacena los Seres Vivos, no va a los binarios
+    int cantSeresVivos = SeresVivos.size();//Registrados, al crear uno, es 0.
 
     public Universo(String Nombre, int cantSeresVivos) {
         this.Nombre = Nombre;

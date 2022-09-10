@@ -78,7 +78,7 @@ public class SerVivo implements Serializable{
 
     @Override
     public String toString() {
-        return Raza +" "+ Nombre;
+        return Raza +": "+ Nombre;
     }
     
     

@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -26,8 +27,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author emili
  */
 public class Main extends javax.swing.JFrame {
-    ArrayList <SerVivo> SeresVivos = new ArrayList();
-    ArrayList <Universo> Universos = new ArrayList();
+    ArrayList <SerVivo> MainSeresVivos = new ArrayList();
+    ArrayList <Universo> MainUniversos = new ArrayList();
     
     public Main() throws IOException {
         initComponents();
@@ -36,18 +37,6 @@ public class Main extends javax.swing.JFrame {
         adminBarra AB = new adminBarra(PB_BarraCarga, false);
         Thread Hilo_Barra = new Thread( AB );
         Hilo_Barra.start();
-        
-        adminUniversos AU = new adminUniversos("./AllUniversos.emi");
-        
-        AU.CargarArchivo();
-        DefaultComboBoxModel NuevoModelo = new DefaultComboBoxModel( AU.getListaUniversos().toArray() );
-        CB_Universo.setModel(NuevoModelo);
-        
-        System.out.println(AU.getListaUniversos().size());
-        
-        for (Universo u : AU.getListaUniversos()) {
-            
-        }
     }
     
     
@@ -101,6 +90,7 @@ public class Main extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         elim_CB_Elegir = new javax.swing.JComboBox<>();
         jLabel22 = new javax.swing.JLabel();
+        elim_BT_Eliminar = new javax.swing.JButton();
         Tab_Verificacion = new javax.swing.JPanel();
         BT_Busqueda = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
@@ -277,6 +267,11 @@ public class Main extends javax.swing.JFrame {
         Tab_Modificar.add(mod_SP_Poder, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 310, 80, -1));
 
         mod_BT_ModificarSerVivo.setText("Modificar Ser Vivo");
+        mod_BT_ModificarSerVivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mod_BT_ModificarSerVivoMouseClicked(evt);
+            }
+        });
         Tab_Modificar.add(mod_BT_ModificarSerVivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 560, 170, 50));
 
         mod_CB_Raza.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
@@ -287,6 +282,11 @@ public class Main extends javax.swing.JFrame {
         mod_CB_Elegir.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 mod_CB_ElegirItemStateChanged(evt);
+            }
+        });
+        mod_CB_Elegir.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                mod_CB_ElegirFocusGained(evt);
             }
         });
         Tab_Modificar.add(mod_CB_Elegir, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 120, 190, -1));
@@ -310,6 +310,15 @@ public class Main extends javax.swing.JFrame {
         jLabel22.setForeground(new java.awt.Color(204, 0, 0));
         jLabel22.setText("Eliminar Ser Vivo");
         Tab_Eliminar.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 180, -1, -1));
+
+        elim_BT_Eliminar.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        elim_BT_Eliminar.setText("Eliminar");
+        elim_BT_Eliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                elim_BT_EliminarMouseClicked(evt);
+            }
+        });
+        Tab_Eliminar.add(elim_BT_Eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 300, 120, 50));
 
         TabbedPane.addTab("Eliminar Ser Vivo", Tab_Eliminar);
 
@@ -404,7 +413,7 @@ public class Main extends javax.swing.JFrame {
                 System.out.println(e.getMessage());
             }
             
-            Universos.add(newUniverso);
+            MainUniversos.add(newUniverso);
             TF_NombreUniverso.setText("");
             JOptionPane.showMessageDialog(this, "El universo ha sido creado exitosamente");
         }
@@ -443,45 +452,63 @@ public class Main extends javax.swing.JFrame {
                 AS.CargarArchivo();
                 AS.getListaSeresVivos().add(newSer);
                 AS.EscribirArchivo();
-                
-                adminUniversos AU = new adminUniversos("./AllUniversos.emi");
-                
-                AU.CargarArchivo();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            
+            //Agregar SerVivo a Universo
+            try {
+                
+                adminUniversos AU = new adminUniversos("./AllUniversos.emi");
+                AU.CargarArchivo();
+                for (int i = 0; i < AU.getListaUniversos().size(); i++) {
+                    if(AU.getListaUniversos().get(i).getNombre().equals(newSer.getProcedencia().getNombre())){
+                        AU.getListaUniversos().get(i).getSeresVivos().add(newSer);
+                    }
+                }
+                AU.EscribirArchivo();
+                
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            
             JOptionPane.showMessageDialog(this, "Ser Vivo creado exitosamente");
             Limpiar_Crear();
-            SeresVivos.add(newSer);
+            MainSeresVivos.add(newSer);
         }
 
     }//GEN-LAST:event_BT_AgregarSerVivoMouseClicked
 
-    private void mod_CB_ElegirItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mod_CB_ElegirItemStateChanged
-        if(evt.getStateChange() == 2){
-            SerVivo modSerVivo = (SerVivo) mod_CB_Elegir.getSelectedItem();
-            DefaultComboBoxModel Mmod_CB_Universo = (DefaultComboBoxModel) mod_CB_Universo.getModel();
-            
-            mod_TF_Nombre.setText(modSerVivo.getNombre());
-            mod_TF_ID.setText(modSerVivo.getID());
-            mod_SP_Poder.setValue(modSerVivo.getPoder());
-            mod_SP_Years.setValue(modSerVivo.getYears());
-            mod_CB_Raza.setSelectedItem(modSerVivo.getRaza());
-            mod_CB_Universo.setSelectedItem(modSerVivo.getProcedencia());
-        }
-    }//GEN-LAST:event_mod_CB_ElegirItemStateChanged
-
     private void TabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabbedPaneStateChanged
         try {
+            //Cargando
+            DefaultComboBoxModel ModeloNuevoSeresVivos = new DefaultComboBoxModel(MainSeresVivos.toArray());
+            mod_CB_Elegir.setModel(ModeloNuevoSeresVivos);
+            elim_CB_Elegir.setModel(ModeloNuevoSeresVivos);
+            
+            DefaultComboBoxModel ModeloNuevoUniversos = new DefaultComboBoxModel(MainUniversos.toArray());
+            CB_Universo.setModel(ModeloNuevoUniversos);
+            
+            //Manual
+            /*
             adminSerVivo AS = new adminSerVivo("./AllSeresVivos.emi");
             AS.CargarArchivo();
             
-            DefaultComboBoxModel ModeloNuevo = new DefaultComboBoxModel(AS.getListaSeresVivos().toArray());
-            CB_Universo.setModel(ModeloNuevo);
-            mod_CB_Elegir.setModel(ModeloNuevo);
-            elim_CB_Elegir.setModel(ModeloNuevo);
+            adminUniversos AU = new adminUniversos("./AllUniversos.emi");
+            AU.CargarArchivo();
             
-        } catch (IOException ex) {
+            DefaultComboBoxModel ModeloNuevoSeresVivos = new DefaultComboBoxModel(AS.getListaSeresVivos().toArray());
+            mod_CB_Elegir.setModel(ModeloNuevoSeresVivos);
+            elim_CB_Elegir.setModel(ModeloNuevoSeresVivos);
+            
+            DefaultComboBoxModel ModeloNuevoUniversos = new DefaultComboBoxModel(AU.getListaUniversos().toArray());
+            CB_Universo.setModel(ModeloNuevoUniversos);
+            */
+            
+            
+            mod_CB_Elegir.setSelectedIndex(-1);
+            elim_CB_Elegir.setSelectedIndex(-1);
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }//GEN-LAST:event_TabbedPaneStateChanged
@@ -504,27 +531,87 @@ public class Main extends javax.swing.JFrame {
                 FR = new FileInputStream(Selected_Archivo);
                 BR = new ObjectInputStream(FR);
                 
-                adminSerVivo AS = new adminSerVivo();
-                AS.setArchivo(Selected_Archivo);
-                AS.CargarArchivo();
                 
-                DefaultComboBoxModel Mmod_CB_Elegir = (DefaultComboBoxModel) mod_CB_Elegir.getModel();
-                DefaultComboBoxModel Melim_CB_Elegir = (DefaultComboBoxModel) elim_CB_Elegir.getModel();
-                
-                //FC.getSelectedFiles().length
-                
-                for (SerVivo s : AS.getListaSeresVivos()) {
-                    Mmod_CB_Elegir.addElement(s);
-                    Melim_CB_Elegir.addElement(s);
+                if(BR.readObject() instanceof SerVivo){
+                    adminSerVivo AS = new adminSerVivo();
+                    AS.setArchivo(Selected_Archivo);
+                    AS.CargarArchivo();    
                     
+                    MainSeresVivos = AS.getListaSeresVivos();
+                }else{
+                    adminUniversos AU = new adminUniversos();
+                    AU.setArchivo(Selected_Archivo);
+                    AU.CargarArchivo();    
+                    
+                    MainUniversos = AU.getListaUniversos();
                 }
-                mod_CB_Elegir.setModel(Mmod_CB_Elegir);
-                elim_CB_Elegir.setModel(Melim_CB_Elegir);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         }
     }//GEN-LAST:event_Mitem_CargarArchivosMousePressed
+
+    private void elim_BT_EliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_elim_BT_EliminarMouseClicked
+        if(elim_CB_Elegir.getSelectedItem() == null){
+            JOptionPane.showMessageDialog(this, "Elija un Ser Vivo");
+        }else{
+            int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar el Ser Vivo?", "Eliminar Ser Vivo", YES_NO_OPTION);
+            if(opcion == 0){
+                
+                try {
+                    adminSerVivo AS = new adminSerVivo("./AllSeresVivos.emi");
+                    AS.CargarArchivo();
+                    AS.getListaSeresVivos().remove(elim_CB_Elegir.getSelectedIndex());
+                    AS.EscribirArchivo();
+                    
+                    JOptionPane.showMessageDialog(this, "Ser Vivo eliminado exitosamente");
+                    elim_CB_Elegir.setSelectedItem(null);
+                } catch (Exception ex) {
+                }
+                
+            }
+        }
+    }//GEN-LAST:event_elim_BT_EliminarMouseClicked
+
+    private void mod_CB_ElegirFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mod_CB_ElegirFocusGained
+        
+    }//GEN-LAST:event_mod_CB_ElegirFocusGained
+
+    private void mod_CB_ElegirItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mod_CB_ElegirItemStateChanged
+        if(mod_CB_Elegir.getSelectedItem() != null){
+            SerVivo modSerVivo = (SerVivo) mod_CB_Elegir.getSelectedItem();
+            
+            mod_TF_Nombre.setText(modSerVivo.getNombre());
+            mod_TF_ID.setText(modSerVivo.getID());
+            mod_SP_Poder.setValue(modSerVivo.getPoder());
+            mod_SP_Years.setValue(modSerVivo.getYears());
+            mod_CB_Raza.setSelectedItem(modSerVivo.getRaza());
+            mod_CB_Universo.setSelectedItem(modSerVivo.getProcedencia());
+        }
+    }//GEN-LAST:event_mod_CB_ElegirItemStateChanged
+
+    private void mod_BT_ModificarSerVivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mod_BT_ModificarSerVivoMouseClicked
+        
+        if(mod_CB_Elegir.getSelectedItem() != null){
+            try {
+                adminSerVivo AS = new adminSerVivo("./AllSeresVivos");
+                AS.CargarArchivo();    
+                AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setNombre(mod_TF_Nombre.getText());
+                AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setID(mod_TF_ID.getText());
+                AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setPoder((int) mod_SP_Poder.getValue());
+                AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setYears((int) mod_SP_Years.getValue());
+                AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setRaza(mod_CB_Raza.getSelectedItem().toString());
+                AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setProcedencia((Universo) mod_CB_Universo.getSelectedItem());
+                AS.EscribirArchivo();
+                
+                JOptionPane.showMessageDialog(this, "Modificado exitosamente");
+            } catch (Exception e) {
+            }    
+        }
+        
+        
+        
+    }//GEN-LAST:event_mod_BT_ModificarSerVivoMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -570,6 +657,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTabbedPane TabbedPane;
     private javax.swing.JTextField busq_TF_ID1;
     private javax.swing.JTextField busq_TF_Nombre1;
+    private javax.swing.JButton elim_BT_Eliminar;
     private javax.swing.JComboBox<String> elim_CB_Elegir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
