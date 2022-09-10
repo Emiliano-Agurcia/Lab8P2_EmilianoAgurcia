@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
@@ -32,9 +33,8 @@ public class Main extends javax.swing.JFrame {
     
     public Main() throws IOException {
         initComponents();
-        
-        
-        adminBarra AB = new adminBarra(PB_BarraCarga, false);
+
+        AB = new adminBarra(PB_BarraCarga, false, false);
         Thread Hilo_Barra = new Thread( AB );
         Hilo_Barra.start();
     }
@@ -48,6 +48,7 @@ public class Main extends javax.swing.JFrame {
         BACKGROUND_Cargar = new javax.swing.JPanel();
         PB_BarraCarga = new javax.swing.JProgressBar();
         jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
         BACKGROUND = new javax.swing.JPanel();
         TabbedPane = new javax.swing.JTabbedPane();
         Tab_Crear = new javax.swing.JPanel();
@@ -101,27 +102,36 @@ public class Main extends javax.swing.JFrame {
         MenuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         Mitem_CargarArchivos = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+
+        Dialog_Cargar.setResizable(false);
 
         BACKGROUND_Cargar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         PB_BarraCarga.setForeground(new java.awt.Color(111, 186, 93));
         PB_BarraCarga.setString("Carga");
         PB_BarraCarga.setStringPainted(true);
-        BACKGROUND_Cargar.add(PB_BarraCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 440, 40));
+        BACKGROUND_Cargar.add(PB_BarraCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 440, 50));
+
+        jLabel23.setFont(new java.awt.Font("Microsoft JhengHei", 0, 12)); // NOI18N
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setText("Esperate un rato brother");
+        BACKGROUND_Cargar.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 150, 30));
+
+        jLabel24.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel24.setText("Cargando archivos...");
+        BACKGROUND_Cargar.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, 180, 70));
 
         javax.swing.GroupLayout Dialog_CargarLayout = new javax.swing.GroupLayout(Dialog_Cargar.getContentPane());
         Dialog_Cargar.getContentPane().setLayout(Dialog_CargarLayout);
         Dialog_CargarLayout.setHorizontalGroup(
             Dialog_CargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BACKGROUND_Cargar, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
+            .addComponent(BACKGROUND_Cargar, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
         );
         Dialog_CargarLayout.setVerticalGroup(
             Dialog_CargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BACKGROUND_Cargar, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+            .addComponent(BACKGROUND_Cargar, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
         );
-
-        jLabel23.setText("jLabel23");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -360,9 +370,6 @@ public class Main extends javax.swing.JFrame {
         });
         jMenu1.add(Mitem_CargarArchivos);
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenu1.add(jMenuItem1);
-
         MenuBar.add(jMenu1);
 
         setJMenuBar(MenuBar);
@@ -531,19 +538,31 @@ public class Main extends javax.swing.JFrame {
                 FR = new FileInputStream(Selected_Archivo);
                 BR = new ObjectInputStream(FR);
                 
-                
                 if(BR.readObject() instanceof SerVivo){
                     adminSerVivo AS = new adminSerVivo();
                     AS.setArchivo(Selected_Archivo);
                     AS.CargarArchivo();    
                     
                     MainSeresVivos = AS.getListaSeresVivos();
+                    //Progress Bar
+                    AbrirJDialog(Dialog_Cargar);
+                    PB_BarraCarga.setMaximum(AS.getListaSeresVivos().size());
+                    AB.setCargar(true);
+                    //Fin Progress Bar
                 }else{
                     adminUniversos AU = new adminUniversos();
                     AU.setArchivo(Selected_Archivo);
                     AU.CargarArchivo();    
                     
                     MainUniversos = AU.getListaUniversos();
+                    //Progress Bar
+                    AbrirJDialog(Dialog_Cargar);
+                    PB_BarraCarga.setMaximum(AU.getListaUniversos().size());
+                    System.out.println(AU.getListaUniversos().size());
+                    AB.setCargar(true);
+                    
+                    Dialog_Cargar.show(false);
+                    //Fin Progress Bar
                 }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -675,6 +694,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -683,7 +703,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton mod_BT_ModificarSerVivo;
     private javax.swing.JComboBox<String> mod_CB_Elegir;
     private javax.swing.JComboBox<String> mod_CB_Raza;
@@ -706,4 +725,13 @@ public class Main extends javax.swing.JFrame {
         CB_Raza.setSelectedItem("Humano");
         CB_Universo.setSelectedIndex(-1);
     }
+    
+    private void AbrirJDialog(JDialog Ventana){
+        Ventana.setModal(true);
+        Ventana.pack();
+        Ventana.setLocationRelativeTo(this);
+        
+        Ventana.setVisible(true);
+    }
+    adminBarra AB;
 }

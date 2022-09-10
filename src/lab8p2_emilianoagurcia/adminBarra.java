@@ -13,10 +13,12 @@ import javax.swing.JProgressBar;
  */
 public class adminBarra extends Thread{
     JProgressBar Barra;
+    boolean Cargar;
     boolean Completado;
 
-    public adminBarra(JProgressBar Barra, boolean Completado) {
+    public adminBarra(JProgressBar Barra, boolean Cargar, boolean Completado) {
         this.Barra = Barra;
+        this.Cargar = Cargar;
         this.Completado = Completado;
     }
 
@@ -36,15 +38,26 @@ public class adminBarra extends Thread{
         this.Completado = Completado;
     }
 
+    public boolean isCargar() {
+        return Cargar;
+    }
+
+    public void setCargar(boolean Cargar) {
+        this.Cargar = Cargar;
+    }
+
     @Override
     public void run() {
         while(Completado == false){
-            Barra.setValue(Barra.getValue() + 1);
-            Barra.setString( Integer.toString(Barra.getValue()) + " de " + Integer.toString(Barra.getMaximum()) + " archivos cargados.");
             
-            if(Barra.getValue() == Barra.getMaximum()){
-                Barra.setString("Archivos Cargados");
-                Completado = true;
+            if(Cargar == true){
+                Barra.setValue(Barra.getValue() + 1);
+                Barra.setString( Integer.toString(Barra.getValue()) + " de " + Integer.toString(Barra.getMaximum()) + " archivos cargados.");
+
+                if(Barra.getValue() == Barra.getMaximum()){
+                    Barra.setString("Archivos Cargados");
+                    Completado = true;
+                }    
             }
             
         }
