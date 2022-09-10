@@ -29,14 +29,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author emili
  */
 public class Main extends javax.swing.JFrame {
-    ArrayList <SerVivo> MainSeresVivos = new ArrayList();
-    ArrayList <Universo> MainUniversos = new ArrayList();
+    ArrayList <SerVivo> SeresVivosCargados = new ArrayList();
+    ArrayList <Universo> UniversosCargados = new ArrayList();
+    
     public Main() throws IOException {
         initComponents();
         
-        
-        
-        AB = new adminBarra(PB_BarraCarga, true, false);
+        L_Espere.setVisible(false);
+        AB = new adminBarra(PB_BarraCarga, L_Cargando, L_Espere, true, false);
     }
     
     
@@ -45,7 +45,6 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        PB_BarraCarga = new javax.swing.JProgressBar();
         BACKGROUND = new javax.swing.JPanel();
         TabbedPane = new javax.swing.JTabbedPane();
         Tab_Crear = new javax.swing.JPanel();
@@ -67,9 +66,10 @@ public class Main extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         CB_Universo = new javax.swing.JComboBox<>();
         BT_CrearUniverso = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
+        Panel_Carga = new javax.swing.JPanel();
+        L_Espere = new javax.swing.JLabel();
+        L_Cargando = new javax.swing.JLabel();
+        PB_BarraCarga = new javax.swing.JProgressBar();
         Tab_Modificar = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -104,13 +104,6 @@ public class Main extends javax.swing.JFrame {
         Mitem_CargarArchivos = new javax.swing.JMenuItem();
 
         jDialog1.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        PB_BarraCarga.setFont(new java.awt.Font("Microsoft JhengHei", 1, 12)); // NOI18N
-        PB_BarraCarga.setForeground(new java.awt.Color(75, 130, 62));
-        PB_BarraCarga.setMaximum(10000);
-        PB_BarraCarga.setString("Carga");
-        PB_BarraCarga.setStringPainted(true);
-        jDialog1.getContentPane().add(PB_BarraCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 440, 50));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -205,22 +198,34 @@ public class Main extends javax.swing.JFrame {
         });
         Tab_Crear.add(BT_CrearUniverso, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 240, 140, 40));
 
-        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Panel_Carga.setBackground(new java.awt.Color(51, 51, 51));
+        Panel_Carga.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                Panel_CargaFocusLost(evt);
+            }
+        });
+        Panel_Carga.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel23.setFont(new java.awt.Font("Microsoft JhengHei", 0, 12)); // NOI18N
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel23.setText("Esperate un rato brother");
-        jPanel1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 70, 150, 30));
+        L_Espere.setFont(new java.awt.Font("Microsoft JhengHei", 0, 12)); // NOI18N
+        L_Espere.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        L_Espere.setText("Esperate un rato brother");
+        Panel_Carga.add(L_Espere, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 150, 30));
 
-        jLabel24.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("Cargando archivos...");
-        jPanel1.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 180, 70));
+        L_Cargando.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
+        L_Cargando.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        L_Cargando.setText("Cargue sus archivos");
+        Panel_Carga.add(L_Cargando, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, 180, 70));
 
-        Tab_Crear.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 370, 580, 210));
+        PB_BarraCarga.setFont(new java.awt.Font("Microsoft JhengHei", 1, 12)); // NOI18N
+        PB_BarraCarga.setForeground(new java.awt.Color(75, 130, 62));
+        PB_BarraCarga.setMaximum(10000);
+        PB_BarraCarga.setString("Carga");
+        PB_BarraCarga.setStringPainted(true);
+        Panel_Carga.add(PB_BarraCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 560, 50));
 
-        TabbedPane.addTab("Ser Vivo", Tab_Crear);
+        Tab_Crear.add(Panel_Carga, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 330, 580, 300));
+
+        TabbedPane.addTab("Agregar", Tab_Crear);
 
         Tab_Modificar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -288,18 +293,13 @@ public class Main extends javax.swing.JFrame {
                 mod_CB_ElegirItemStateChanged(evt);
             }
         });
-        mod_CB_Elegir.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                mod_CB_ElegirFocusGained(evt);
-            }
-        });
         Tab_Modificar.add(mod_CB_Elegir, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 120, 190, -1));
 
         jLabel17.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
         jLabel17.setText("Nombre");
         Tab_Modificar.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, -1, -1));
 
-        TabbedPane.addTab("Modificar Ser Vivo", Tab_Modificar);
+        TabbedPane.addTab("Modificar", Tab_Modificar);
 
         Tab_Eliminar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -324,11 +324,16 @@ public class Main extends javax.swing.JFrame {
         });
         Tab_Eliminar.add(elim_BT_Eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 300, 120, 50));
 
-        TabbedPane.addTab("Eliminar Ser Vivo", Tab_Eliminar);
+        TabbedPane.addTab("Eliminar", Tab_Eliminar);
 
         Tab_Verificacion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         BT_Busqueda.setText("Buscar");
+        BT_Busqueda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BT_BusquedaMouseClicked(evt);
+            }
+        });
         Tab_Verificacion.add(BT_Busqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 133, 51));
 
         jLabel18.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
@@ -414,14 +419,14 @@ public class Main extends javax.swing.JFrame {
                 System.out.println(e.getMessage());
             }
             
-            MainUniversos.add(newUniverso);
+            UniversosCargados.add(newUniverso);
             TF_NombreUniverso.setText("");
             JOptionPane.showMessageDialog(this, "El universo ha sido creado exitosamente");
         }
     }//GEN-LAST:event_BT_CrearUniversoMouseClicked
 
     private void BT_AgregarSerVivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BT_AgregarSerVivoMouseClicked
-        if(TF_Nombre.getText().isEmpty() || TF_ID.getText().isEmpty() || CB_Universo.getSelectedItem() == null ){
+        if(TF_Nombre.getText().isEmpty() || TF_ID.getText().isEmpty() || CB_Universo.getSelectedItem() == null){
             JOptionPane.showMessageDialog(this, "Por favor llene todas las casillas");
         }else{
             SerVivo newSer = new SerVivo(
@@ -475,7 +480,7 @@ public class Main extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(this, "Ser Vivo creado exitosamente");
             Limpiar_Crear();
-            MainSeresVivos.add(newSer);
+            SeresVivosCargados.add(newSer);
         }
 
     }//GEN-LAST:event_BT_AgregarSerVivoMouseClicked
@@ -483,12 +488,13 @@ public class Main extends javax.swing.JFrame {
     private void TabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabbedPaneStateChanged
         try {
             //Cargando
-            DefaultComboBoxModel ModeloNuevoSeresVivos = new DefaultComboBoxModel(MainSeresVivos.toArray());
+            DefaultComboBoxModel ModeloNuevoSeresVivos = new DefaultComboBoxModel(SeresVivosCargados.toArray());
             mod_CB_Elegir.setModel(ModeloNuevoSeresVivos);
             elim_CB_Elegir.setModel(ModeloNuevoSeresVivos);
             
-            DefaultComboBoxModel ModeloNuevoUniversos = new DefaultComboBoxModel(MainUniversos.toArray());
+            DefaultComboBoxModel ModeloNuevoUniversos = new DefaultComboBoxModel(UniversosCargados.toArray());
             CB_Universo.setModel(ModeloNuevoUniversos);
+            mod_CB_Universo.setModel(ModeloNuevoUniversos);
             
             //Manual
             /*
@@ -537,12 +543,14 @@ public class Main extends javax.swing.JFrame {
                     AS.setArchivo(Selected_Archivo);
                     AS.CargarArchivo();    
                     
-                    MainSeresVivos = AS.getListaSeresVivos();
+                    SeresVivosCargados = AS.getListaSeresVivos();
                     
                     //Progress Bar
-                    AbrirJDialog(jDialog1);
                     PB_BarraCarga.setMaximum(AS.getListaSeresVivos().size());
+                    L_Cargando.setText("Cargando archivos...");
+                    L_Espere.setVisible(true);
                     AB.start();
+                    AB = new adminBarra(PB_BarraCarga, L_Cargando, L_Espere, true, false);
                     //Fin Progress Bar
                     
                 }else{
@@ -550,15 +558,24 @@ public class Main extends javax.swing.JFrame {
                     AU.setArchivo(Selected_Archivo);
                     AU.CargarArchivo();    
                     
-                    MainUniversos = AU.getListaUniversos();
+                    UniversosCargados = AU.getListaUniversos();
                     
                     //Progress Bar
-                    AbrirJDialog(jDialog1);
+                    L_Cargando.setText("Cargando archivos...");
+                    L_Espere.setVisible(true);
                     PB_BarraCarga.setMaximum(AU.getListaUniversos().size());
                     AB.start();
+                    AB = new adminBarra(PB_BarraCarga, L_Cargando, L_Espere, true, false);
                     //Fin Progress Bar
                 }
             } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+            
+            try {
+                BR.close();
+                FR.close();
+            } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
         }
@@ -586,10 +603,6 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_elim_BT_EliminarMouseClicked
 
-    private void mod_CB_ElegirFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mod_CB_ElegirFocusGained
-        
-    }//GEN-LAST:event_mod_CB_ElegirFocusGained
-
     private void mod_CB_ElegirItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_mod_CB_ElegirItemStateChanged
         if(mod_CB_Elegir.getSelectedItem() != null){
             SerVivo modSerVivo = (SerVivo) mod_CB_Elegir.getSelectedItem();
@@ -599,13 +612,15 @@ public class Main extends javax.swing.JFrame {
             mod_SP_Poder.setValue(modSerVivo.getPoder());
             mod_SP_Years.setValue(modSerVivo.getYears());
             mod_CB_Raza.setSelectedItem(modSerVivo.getRaza());
-            mod_CB_Universo.setSelectedItem(modSerVivo.getProcedencia());
+            mod_CB_Universo.setSelectedIndex(UniversosCargados.indexOf(modSerVivo.getProcedencia()));
         }
     }//GEN-LAST:event_mod_CB_ElegirItemStateChanged
 
     private void mod_BT_ModificarSerVivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mod_BT_ModificarSerVivoMouseClicked
-        
-        if(mod_CB_Elegir.getSelectedItem() != null){
+        if(mod_TF_Nombre.getText().isEmpty() || mod_TF_ID.getText().isEmpty() || mod_CB_Universo.getSelectedItem() == null ){
+            JOptionPane.showMessageDialog(this, "Por favor llene todas las casillas");
+        }
+        if(mod_CB_Elegir.getSelectedIndex() != -1){
             try {
                 adminSerVivo AS = new adminSerVivo("./AllSeresVivos");
                 AS.CargarArchivo();    
@@ -622,9 +637,29 @@ public class Main extends javax.swing.JFrame {
             }    
         }
         
-        
-        
     }//GEN-LAST:event_mod_BT_ModificarSerVivoMouseClicked
+
+    private void Panel_CargaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Panel_CargaFocusLost
+        
+    }//GEN-LAST:event_Panel_CargaFocusLost
+
+    private void BT_BusquedaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BT_BusquedaMouseClicked
+        boolean encontrado = false;
+        SerVivo SerEncontrado = null;
+        
+        for (int i = 0; i < SeresVivosCargados.size(); i++) {
+            if(SeresVivosCargados.get(i).getNombre().equals(busq_TF_Nombre1.getText()) && SeresVivosCargados.get(i).getID().equals(busq_TF_ID1.getText())){
+                encontrado = true;
+                SerEncontrado = SeresVivosCargados.get(i);
+            }
+        }
+        
+        if(encontrado == true){
+            JOptionPane.showMessageDialog(this, "El ser ha sido Encontrado en el universo "+ SerEncontrado.getProcedencia().getNombre());
+        }else{
+            JOptionPane.showMessageDialog(this, "El ser que desea buscar no existe");
+        }
+    }//GEN-LAST:event_BT_BusquedaMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -654,9 +689,12 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenu BarraMenu;
     private javax.swing.JComboBox<String> CB_Raza;
     private javax.swing.JComboBox<String> CB_Universo;
+    private javax.swing.JLabel L_Cargando;
+    private javax.swing.JLabel L_Espere;
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenuItem Mitem_CargarArchivos;
     private javax.swing.JProgressBar PB_BarraCarga;
+    private javax.swing.JPanel Panel_Carga;
     private javax.swing.JSpinner SP_Poder;
     private javax.swing.JSpinner SP_Years;
     private javax.swing.JTextField TF_ID;
@@ -687,8 +725,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -696,7 +732,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton mod_BT_ModificarSerVivo;
     private javax.swing.JComboBox<String> mod_CB_Elegir;
     private javax.swing.JComboBox<String> mod_CB_Raza;
@@ -727,5 +762,6 @@ public class Main extends javax.swing.JFrame {
         
         Ventana.setVisible(true);
     }
+    
     adminBarra AB;
 }
