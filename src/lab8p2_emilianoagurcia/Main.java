@@ -60,7 +60,7 @@ public class Main extends javax.swing.JFrame {
         SP_Years = new javax.swing.JSpinner();
         CB_Raza = new javax.swing.JComboBox<>();
         TF_ID = new javax.swing.JTextField();
-        TF_Nombre = new javax.swing.JTextField();
+        TF_NombreSer = new javax.swing.JTextField();
         SP_Poder = new javax.swing.JSpinner();
         BT_AgregarSerVivo = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
@@ -165,8 +165,8 @@ public class Main extends javax.swing.JFrame {
         TF_ID.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
         Tab_Crear.add(TF_ID, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 180, -1));
 
-        TF_Nombre.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
-        Tab_Crear.add(TF_Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 180, -1));
+        TF_NombreSer.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
+        Tab_Crear.add(TF_NombreSer, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, 180, -1));
 
         SP_Poder.setFont(new java.awt.Font("Microsoft JhengHei", 0, 14)); // NOI18N
         SP_Poder.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
@@ -199,11 +199,6 @@ public class Main extends javax.swing.JFrame {
         Tab_Crear.add(BT_CrearUniverso, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 240, 140, 40));
 
         Panel_Carga.setBackground(new java.awt.Color(51, 51, 51));
-        Panel_Carga.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                Panel_CargaFocusLost(evt);
-            }
-        });
         Panel_Carga.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         L_Espere.setFont(new java.awt.Font("Microsoft JhengHei", 0, 12)); // NOI18N
@@ -391,96 +386,118 @@ public class Main extends javax.swing.JFrame {
         if(TF_NombreUniverso.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "Por favor ingrese un nombre para el universo");
         }else{
-            Universo newUniverso = new Universo(
-                TF_NombreUniverso.getText(),
-                0
-            );
-            
-            //Single Universo
-            try {
-                String path = "./cUniversos/" + TF_NombreUniverso.getText() + ".emi";
-                System.out.println(path);
-                
-                adminUniversos AU = new adminUniversos(path);
-                AU.CargarArchivo();
-                AU.getListaUniversos().add(newUniverso);
-                AU.EscribirArchivo();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            boolean Incluido = false;
+            for (int i = 0; i < UniversosCargados.size(); i++) {
+                if(UniversosCargados.get(i).getNombre().equals(TF_NombreUniverso.getText())){
+                    Incluido = true;
+                }
+            }
+            if(Incluido == false){
+                Universo newUniverso = new Universo(
+                    TF_NombreUniverso.getText(),
+                    0
+                );
+
+                //Single Universo
+                try {
+                    String path = "./cUniversos/" + TF_NombreUniverso.getText() + ".emi";
+                    System.out.println(path);
+
+                    adminUniversos AU = new adminUniversos(path);
+                    AU.CargarArchivo();
+                    AU.getListaUniversos().add(newUniverso);
+                    AU.EscribirArchivo();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                //All Universos
+                try {
+                    adminUniversos AU = new adminUniversos("./AllUniversos.emi");
+                    AU.CargarArchivo();
+                    AU.getListaUniversos().add(newUniverso);
+                    AU.EscribirArchivo();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                UniversosCargados.add(newUniverso);
+                TF_NombreUniverso.setText("");
+                JOptionPane.showMessageDialog(this, "El universo ha sido creado exitosamente");    
+            }else{
+                JOptionPane.showMessageDialog(this, "El Universo ya esta incluido");
             }
             
-            //All Universos
-            try {
-                adminUniversos AU = new adminUniversos("./AllUniversos.emi");
-                AU.CargarArchivo();
-                AU.getListaUniversos().add(newUniverso);
-                AU.EscribirArchivo();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            
-            UniversosCargados.add(newUniverso);
-            TF_NombreUniverso.setText("");
-            JOptionPane.showMessageDialog(this, "El universo ha sido creado exitosamente");
         }
     }//GEN-LAST:event_BT_CrearUniversoMouseClicked
 
     private void BT_AgregarSerVivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BT_AgregarSerVivoMouseClicked
-        if(TF_Nombre.getText().isEmpty() || TF_ID.getText().isEmpty() || CB_Universo.getSelectedItem() == null){
+        if(TF_NombreSer.getText().isEmpty() || TF_ID.getText().isEmpty() || CB_Universo.getSelectedItem() == null){
             JOptionPane.showMessageDialog(this, "Por favor llene todas las casillas");
         }else{
-            SerVivo newSer = new SerVivo(
-                TF_Nombre.getText(),
-                TF_ID.getText(),
-                (int)SP_Poder.getValue(),
-                (int)SP_Years.getValue(),
-                (Universo) CB_Universo.getSelectedItem(),
-                (String) CB_Raza.getSelectedItem()
-            );
-            
-            //Singel SerVivo
-            try {
-                String path = "./cSeresVivos/" + TF_Nombre.getText() + ".emi";
-                
-                adminSerVivo AS = new adminSerVivo(path);
-                
-                AS.CargarArchivo();
-                AS.getListaSeresVivos().add(newSer);
-                AS.EscribirArchivo();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            
-            //AllSeresVivos
-            try {
-                adminSerVivo AS = new adminSerVivo("./AllSeresVivos.emi");
-                
-                AS.CargarArchivo();
-                AS.getListaSeresVivos().add(newSer);
-                AS.EscribirArchivo();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            
-            //Agregar SerVivo a Universo
-            try {
-                
-                adminUniversos AU = new adminUniversos("./AllUniversos.emi");
-                AU.CargarArchivo();
-                for (int i = 0; i < AU.getListaUniversos().size(); i++) {
-                    if(AU.getListaUniversos().get(i).getNombre().equals(newSer.getProcedencia().getNombre())){
-                        AU.getListaUniversos().get(i).getSeresVivos().add(newSer);
-                    }
+            boolean Incluido = false;
+            for (int i = 0; i < SeresVivosCargados.size(); i++) {
+                if(SeresVivosCargados.get(i).getNombre().equals(TF_NombreSer.getText())){
+                    Incluido = true;
                 }
-                AU.EscribirArchivo();
-                
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            }
+            if(Incluido == false){
+                SerVivo newSer = new SerVivo(
+                    TF_NombreSer.getText(),
+                    TF_ID.getText(),
+                    (int)SP_Poder.getValue(),
+                    (int)SP_Years.getValue(),
+                    (Universo) CB_Universo.getSelectedItem(),
+                    (String) CB_Raza.getSelectedItem()
+                );
+
+                //Singel SerVivo
+                try {
+                    String path = "./cSeresVivos/" + TF_NombreSer.getText() + ".emi";
+
+                    adminSerVivo AS = new adminSerVivo(path);
+
+                    AS.CargarArchivo();
+                    AS.getListaSeresVivos().add(newSer);
+                    AS.EscribirArchivo();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                //AllSeresVivos
+                try {
+                    adminSerVivo AS = new adminSerVivo("./AllSeresVivos.emi");
+
+                    AS.CargarArchivo();
+                    AS.getListaSeresVivos().add(newSer);
+                    AS.EscribirArchivo();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                //Agregar SerVivo a Universo
+                try {
+
+                    adminUniversos AU = new adminUniversos("./AllUniversos.emi");
+                    AU.CargarArchivo();
+                    for (int i = 0; i < AU.getListaUniversos().size(); i++) {
+                        if(AU.getListaUniversos().get(i).getNombre().equals(newSer.getProcedencia().getNombre())){
+                            AU.getListaUniversos().get(i).getSeresVivos().add(newSer);
+                        }
+                    }
+                    AU.EscribirArchivo();
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+                JOptionPane.showMessageDialog(this, "Ser Vivo creado exitosamente");
+                Limpiar_Crear();
+                SeresVivosCargados.add(newSer);    
+            }else{
+                JOptionPane.showMessageDialog(this, "El ID ya esta incluido");
             }
             
-            JOptionPane.showMessageDialog(this, "Ser Vivo creado exitosamente");
-            Limpiar_Crear();
-            SeresVivosCargados.add(newSer);
         }
 
     }//GEN-LAST:event_BT_AgregarSerVivoMouseClicked
@@ -682,6 +699,7 @@ public class Main extends javax.swing.JFrame {
 
                     if (pathModificar.equals(path)) {
                         adminSerVivo AS = new adminSerVivo(path);
+                        Archivo.renameTo(new File( "./cSeresVivos/"+mod_TF_Nombre.getText()+".emi"));
                         AS.CargarArchivo();
                         AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setNombre(mod_TF_Nombre.getText());
                         AS.getListaSeresVivos().get(mod_CB_Elegir.getSelectedIndex()).setID(mod_TF_ID.getText());
@@ -698,10 +716,6 @@ public class Main extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_mod_BT_ModificarSerVivoMouseClicked
-
-    private void Panel_CargaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Panel_CargaFocusLost
-        
-    }//GEN-LAST:event_Panel_CargaFocusLost
 
     private void BT_BusquedaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BT_BusquedaMouseClicked
         boolean encontrado = false;
@@ -758,7 +772,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSpinner SP_Poder;
     private javax.swing.JSpinner SP_Years;
     private javax.swing.JTextField TF_ID;
-    private javax.swing.JTextField TF_Nombre;
+    private javax.swing.JTextField TF_NombreSer;
     private javax.swing.JTextField TF_NombreUniverso;
     private javax.swing.JPanel Tab_Crear;
     private javax.swing.JPanel Tab_Eliminar;
@@ -807,7 +821,7 @@ public class Main extends javax.swing.JFrame {
     }
     
     public void Limpiar_Crear(){
-        TF_Nombre.setText("");
+        TF_NombreSer.setText("");
         TF_ID.setText("");
         SP_Poder.setValue(1);
         SP_Years.setValue(1);
