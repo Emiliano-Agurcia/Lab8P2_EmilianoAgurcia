@@ -20,6 +20,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
+import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -32,7 +33,9 @@ public class Main extends javax.swing.JFrame {
     ArrayList <Universo> MainUniversos = new ArrayList();
     public Main() throws IOException {
         initComponents();
-
+        
+        
+        
         AB = new adminBarra(PB_BarraCarga, true, false);
     }
     
@@ -41,11 +44,8 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Dialog_Cargar = new javax.swing.JDialog();
-        BACKGROUND_Cargar = new javax.swing.JPanel();
+        jDialog1 = new javax.swing.JDialog();
         PB_BarraCarga = new javax.swing.JProgressBar();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
         BACKGROUND = new javax.swing.JPanel();
         TabbedPane = new javax.swing.JTabbedPane();
         Tab_Crear = new javax.swing.JPanel();
@@ -67,6 +67,9 @@ public class Main extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         CB_Universo = new javax.swing.JComboBox<>();
         BT_CrearUniverso = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
         Tab_Modificar = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -97,39 +100,17 @@ public class Main extends javax.swing.JFrame {
         busq_TF_Nombre1 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         MenuBar = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        BarraMenu = new javax.swing.JMenu();
         Mitem_CargarArchivos = new javax.swing.JMenuItem();
 
-        Dialog_Cargar.setResizable(false);
+        jDialog1.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        BACKGROUND_Cargar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        PB_BarraCarga.setForeground(new java.awt.Color(111, 186, 93));
+        PB_BarraCarga.setFont(new java.awt.Font("Microsoft JhengHei", 1, 12)); // NOI18N
+        PB_BarraCarga.setForeground(new java.awt.Color(75, 130, 62));
         PB_BarraCarga.setMaximum(10000);
         PB_BarraCarga.setString("Carga");
         PB_BarraCarga.setStringPainted(true);
-        BACKGROUND_Cargar.add(PB_BarraCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 440, 50));
-
-        jLabel23.setFont(new java.awt.Font("Microsoft JhengHei", 0, 12)); // NOI18N
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel23.setText("Esperate un rato brother");
-        BACKGROUND_Cargar.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 150, 30));
-
-        jLabel24.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("Cargando archivos...");
-        BACKGROUND_Cargar.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, 180, 70));
-
-        javax.swing.GroupLayout Dialog_CargarLayout = new javax.swing.GroupLayout(Dialog_Cargar.getContentPane());
-        Dialog_Cargar.getContentPane().setLayout(Dialog_CargarLayout);
-        Dialog_CargarLayout.setHorizontalGroup(
-            Dialog_CargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BACKGROUND_Cargar, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
-        );
-        Dialog_CargarLayout.setVerticalGroup(
-            Dialog_CargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(BACKGROUND_Cargar, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
-        );
+        jDialog1.getContentPane().add(PB_BarraCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 440, 50));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -223,6 +204,21 @@ public class Main extends javax.swing.JFrame {
             }
         });
         Tab_Crear.add(BT_CrearUniverso, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 240, 140, 40));
+
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel23.setFont(new java.awt.Font("Microsoft JhengHei", 0, 12)); // NOI18N
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setText("Esperate un rato brother");
+        jPanel1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 70, 150, 30));
+
+        jLabel24.setFont(new java.awt.Font("Microsoft JhengHei", 1, 14)); // NOI18N
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel24.setText("Cargando archivos...");
+        jPanel1.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 180, 70));
+
+        Tab_Crear.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 370, 580, 210));
 
         TabbedPane.addTab("Ser Vivo", Tab_Crear);
 
@@ -358,7 +354,7 @@ public class Main extends javax.swing.JFrame {
 
         BACKGROUND.add(TabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1240, 780));
 
-        jMenu1.setText("Archivos");
+        BarraMenu.setText("Archivos");
 
         Mitem_CargarArchivos.setText("Cargar Archivos");
         Mitem_CargarArchivos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -366,9 +362,9 @@ public class Main extends javax.swing.JFrame {
                 Mitem_CargarArchivosMousePressed(evt);
             }
         });
-        jMenu1.add(Mitem_CargarArchivos);
+        BarraMenu.add(Mitem_CargarArchivos);
 
-        MenuBar.add(jMenu1);
+        MenuBar.add(BarraMenu);
 
         setJMenuBar(MenuBar);
 
@@ -543,9 +539,8 @@ public class Main extends javax.swing.JFrame {
                     
                     MainSeresVivos = AS.getListaSeresVivos();
                     
-                    
                     //Progress Bar
-                    AbrirJDialog(Dialog_Cargar);
+                    AbrirJDialog(jDialog1);
                     PB_BarraCarga.setMaximum(AS.getListaSeresVivos().size());
                     AB.start();
                     //Fin Progress Bar
@@ -557,9 +552,8 @@ public class Main extends javax.swing.JFrame {
                     
                     MainUniversos = AU.getListaUniversos();
                     
-                    
                     //Progress Bar
-                    AbrirJDialog(Dialog_Cargar);
+                    AbrirJDialog(jDialog1);
                     PB_BarraCarga.setMaximum(AU.getListaUniversos().size());
                     AB.start();
                     //Fin Progress Bar
@@ -654,13 +648,12 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BACKGROUND;
-    private javax.swing.JPanel BACKGROUND_Cargar;
     private javax.swing.JButton BT_AgregarSerVivo;
     private javax.swing.JButton BT_Busqueda;
     private javax.swing.JButton BT_CrearUniverso;
+    private javax.swing.JMenu BarraMenu;
     private javax.swing.JComboBox<String> CB_Raza;
     private javax.swing.JComboBox<String> CB_Universo;
-    private javax.swing.JDialog Dialog_Cargar;
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenuItem Mitem_CargarArchivos;
     private javax.swing.JProgressBar PB_BarraCarga;
@@ -678,6 +671,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField busq_TF_Nombre1;
     private javax.swing.JButton elim_BT_Eliminar;
     private javax.swing.JComboBox<String> elim_CB_Elegir;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -702,7 +696,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton mod_BT_ModificarSerVivo;
     private javax.swing.JComboBox<String> mod_CB_Elegir;
     private javax.swing.JComboBox<String> mod_CB_Raza;

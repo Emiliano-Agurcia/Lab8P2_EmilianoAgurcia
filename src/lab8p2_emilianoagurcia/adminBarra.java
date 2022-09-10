@@ -57,14 +57,13 @@ public class adminBarra extends Thread{
                 if(Barra.getValue() == Barra.getMaximum()){
                     Barra.setString("Archivos Cargados");
                     Completado = true;
-                }    
+                }
             }
-            
-        }
-        
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
         }
     }
     
