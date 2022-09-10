@@ -30,13 +30,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Main extends javax.swing.JFrame {
     ArrayList <SerVivo> MainSeresVivos = new ArrayList();
     ArrayList <Universo> MainUniversos = new ArrayList();
-    
     public Main() throws IOException {
         initComponents();
 
-        AB = new adminBarra(PB_BarraCarga, false, false);
-        Thread Hilo_Barra = new Thread( AB );
-        Hilo_Barra.start();
+        AB = new adminBarra(PB_BarraCarga, true, false);
     }
     
     
@@ -108,6 +105,7 @@ public class Main extends javax.swing.JFrame {
         BACKGROUND_Cargar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         PB_BarraCarga.setForeground(new java.awt.Color(111, 186, 93));
+        PB_BarraCarga.setMaximum(10000);
         PB_BarraCarga.setString("Carga");
         PB_BarraCarga.setStringPainted(true);
         BACKGROUND_Cargar.add(PB_BarraCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 440, 50));
@@ -544,24 +542,26 @@ public class Main extends javax.swing.JFrame {
                     AS.CargarArchivo();    
                     
                     MainSeresVivos = AS.getListaSeresVivos();
+                    
+                    
                     //Progress Bar
                     AbrirJDialog(Dialog_Cargar);
                     PB_BarraCarga.setMaximum(AS.getListaSeresVivos().size());
-                    AB.setCargar(true);
+                    AB.start();
                     //Fin Progress Bar
+                    
                 }else{
                     adminUniversos AU = new adminUniversos();
                     AU.setArchivo(Selected_Archivo);
                     AU.CargarArchivo();    
                     
                     MainUniversos = AU.getListaUniversos();
+                    
+                    
                     //Progress Bar
                     AbrirJDialog(Dialog_Cargar);
                     PB_BarraCarga.setMaximum(AU.getListaUniversos().size());
-                    System.out.println(AU.getListaUniversos().size());
-                    AB.setCargar(true);
-                    
-                    Dialog_Cargar.show(false);
+                    AB.start();
                     //Fin Progress Bar
                 }
             } catch (Exception ex) {
